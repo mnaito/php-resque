@@ -155,6 +155,10 @@ class Resque_Job
 			);
 		}
 
+		// Reload the job class first before create a new instance of the class.
+		$class = $this->payload['class'];
+		unset($class);
+
 		$this->instance = new $this->payload['class']();
 		$this->instance->job = $this;
 		$this->instance->args = $this->getArguments();
