@@ -52,6 +52,12 @@ if($count > 1) {
 		}
 		// Child, start the worker
 		else if(!$pid) {
+			$PIDFILE = getenv('PIDFILE');
+			if ($PIDFILE) {
+				file_put_contents($PIDFILE, getmypid()."\n", FILE_APPEND | LOCK_EX) or
+				die('Could not write PID information to ' . $PIDFILE);
+			}
+			
 			$queues = explode(',', $QUEUE);
 			$worker = new Resque_Worker($queues);
 			$worker->logLevel = $logLevel;
